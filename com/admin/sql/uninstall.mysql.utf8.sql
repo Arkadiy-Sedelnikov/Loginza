@@ -1,0 +1,1 @@
+ALTER TABLE  `jos_users` DROP  `loginza_id`

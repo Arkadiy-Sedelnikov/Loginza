@@ -1,0 +1,34 @@
+.loginza_logenter{ margin: 0 0 10px 0;}
+.loginza_providers{width: 100%;}
+.loginza_provider{float: left; width: 16%; height: 20px; text-align: center;}
+.loginza_clear{clear: both; width: 100%;}
+/*Хотите такой-же виджет?*/
+.loginza-invite{font-size: 8pt; margin: 10px 0 10px 0; padding-bottom: 5px;}
+.loginza-hello{}
+.loginza-logout-button{}
+/*Спрайты провайдеров*/
+.loginza_provider_img       {display:block; width:16px; height:16px;	background:url(/modules/mod_loginza/tmpl/img/providers_ico_sprite.png);}
+.loginza_prov_google        {background-position:0px 304px;}
+.loginza_prov_yandex        {background-position:0px 288px;}
+.loginza_prov_mailru        {background-position:0px 272px;}
+.loginza_prov_mailruapi     {background-position:0px 272px;}
+.loginza_prov_vkontakte     {background-position:0px 256px;}
+.loginza_prov_facebook      {background-position:0px 240px;}
+.loginza_prov_twitter       {background-position:0px 224px;}
+.loginza_prov_loginza       {background-position:0px 208px;}
+.loginza_prov_myopenid      {background-position:0px 192px;}
+.loginza_prov_webmoney      {background-position:0px 176px;}
+.loginza_prov_rambler       {background-position:0px 160px;}
+.loginza_prov_flickr        {background-position:0px 144px;}
+.loginza_prov_lastfm        {background-position:0px 128px;}
+.loginza_prov_openid        {background-position:0px 112px;}
+.loginza_prov_verisign      {background-position:0px 96px;}
+.loginza_prov_aol           {background-position:0px 80px;}
+.loginza_prov_steam         {background-position:0px 64px;}
+.loginza_prov_livejournal   {background-position:0px 48px;}
+.loginza_prov_odnoklassniki {background-position:0px 32px;}
+.loginza_prov_linkedin      {background-position:0px 16px;}
+
+#form-login {margin-top: 10px;}
+#form-login label {margin-right: 10px; width: 8.4em; display: block; float: left;}
+#form-login .inputbox {border: solid 1px #DDD; padding: 2px; width: 100px; height: 15px;}

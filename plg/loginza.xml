@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<extension version="1.7" type="plugin" group="authentication">
+	<name>Authentication - Loginza</name>
+	<author>Sergey Vershinin</author>
+	<creationDate>May 2011</creationDate>
+	<copyright>Copyright (C) 2005 - 2010 Open Source Matters. All rights reserved.</copyright>
+	<license>http://www.gnu.org/licenses/gpl-2.0.html GNU/GPL</license>
+	<authorEmail>ask@vshowbize.ru</authorEmail>
+	<authorUrl>www.vshowbize.ru</authorUrl>
+	<version>1.0.0</version>
+	<description>Handles Joomlas default user authentication by loginza</description>
+	<files>
+		<filename plugin="loginza">loginza.php</filename>
+		<filename>index.html</filename>
+	</files>
+	<params/>
+</extension>

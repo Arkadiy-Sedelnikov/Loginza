@@ -1,0 +1,299 @@
+<?xml version="1.0" encoding="utf-8"?>
+<install type="module" version="1.5" method="upgrade">
+    <name>Loginza</name>
+    <author>Аркадий Седельников</author>
+    <creationDate>07.10.2011</creationDate>
+    <copyright>Copyright Arkadiy Sedelnikov (c) 2011</copyright>
+    <license>GPL 3.0</license>
+    <authorEmail>a.sedelnikov@gmail.com</authorEmail>
+    <authorUrl>argens.ru</authorUrl>
+    <version>1.0.6</version>
+    <description>
+        Based on the module Loginza from Anton Piskunov. Display a login form in Loginza and more than 20 providers of OpenID, such as AOL, Google, MyOpenId and others.
+    </description>
+
+    <files>
+        <filename module="mod_loginza">mod_loginza.php</filename>
+        <filename>index.html</filename>
+        <filename>license.txt</filename>
+        <filename>helper.php</filename>
+        <folder>tmpl</folder>
+    </files>
+
+    <languages folder="languages">
+        <language tag="en-GB">en-GB.mod_loginza.ini</language>
+        <language tag="ru-RU">ru-RU.mod_loginza.ini</language>
+    </languages>
+
+    <config>
+        <fields name="params">
+            <fieldset name="basic">
+                <field
+                        name="mode"
+                        type="list"
+                        default="icons"
+                        label="MOD_LOGINZA_REGIM"
+                        description="MOD_LOGINZA_REGIM_DESC">
+                    <option value="html">MOD_LOGINZA_TEXT</option>
+                    <option value="icons">MOD_LOGINZA_ICONS</option>
+                    <option value="iconssmall">MOD_LOGINZA_ICONS_SMALL</option>
+                    <option value="iconstable">MOD_LOGINZA_ICONS_TABLE</option>
+                </field>
+                <field
+                        name="providers"
+                        type="list"
+                        multiple="true"
+                        default="all"
+                        label="MOD_LOGINZA_PROV"
+                        description="MOD_LOGINZA_PROV_DESC"
+                        >
+                    <option value="all">MOD_LOGINZA_USER_CHOICE</option>
+                    <option value="google">Google</option>
+                    <option value="yandex">Yandex</option>
+                    <option value="mailruapi">Mail.ru API</option>
+                    <option value="mailru">Mail.ru</option>
+                    <option value="vkontakte">VKontakte</option>
+                    <option value="facebook">Facebook</option>
+                    <option value="twitter">Twitter</option>
+                    <option value="loginza">Lоginza</option>
+                    <option value="myopenid">MyOpenId</option>
+                    <option value="webmoney">Webmoney</option>
+                    <option value="rambler">Rambler</option>
+                    <option value="flickr">Flickr</option>
+                    <option value="lastfm">Lastfm</option>
+                    <option value="aol">AOL</option>
+                    <option value="odnoklassniki">Odnoklassniki</option>
+                    <option value="linkedin">LinkedIn</option>
+                    <option value="livejournal">LiveJournal</option>
+                    <option value="steam">Steam</option>
+                    <!--<option value="openid">OpenId</option>-->
+                    <!--<option value="verisign">Verisign</option>-->
+                </field>
+
+                <field
+                        name="invite"
+                        type="radio"
+                        default="1"
+                        label="MOD_LOGINZA_INVITE"
+                        description="MOD_LOGINZA_INVITE_DESC"
+                        >
+                    <option value="0">JNO</option>
+                    <option value="1">JYES</option>
+                </field>
+                <field
+                        name="login_form"
+                        type="radio"
+                        default="1"
+                        label="MOD_LOGINZA_LOGIN_FORM"
+                        description="MOD_LOGINZA_LOGIN_FORM_DESC"
+                        >
+                    <option value="0">JNO</option>
+                    <option value="1">JYES</option>
+                </field>
+                <field
+                        name="greeting"
+                        type="radio"
+                        default="1"
+                        label="MOD_LOGINZA_GREETING"
+                        description="MOD_LOGINZA_GREETING_DESC"
+                        >
+                    <option value="0">JNO</option>
+                    <option value="1">JYES</option>
+                </field>
+                <field
+                        name="greeting_template"
+                        type="text"
+                        default="Hi, %s!"
+                        label="MOD_LOGINZA_GREETING_TPL"
+                        description="MOD_LOGINZA_GREETING_TPL_DESC"
+                        />
+                <field
+                        name="name"
+                        type="list"
+                        default="0"
+                        label="MOD_LOGINZA_NAME"
+                        description="MOD_LOGINZA_NAME_DESC"
+                        >
+                    <option value="0">Username</option>
+                    <option value="1">Name</option>
+                </field>
+            </fieldset>
+            <fieldset
+                    name="advanced">
+                <field
+                        name="login"
+                        type="menuitem"
+                        default=""
+                        disable="separator"
+                        label="MOD_LOGINZA_LOGIN_REDIR"
+                        description="MOD_LOGINZA_LOGIN_REDIR_DESC"
+                        state="1"
+                        >
+                    <option value="">Текущая страница</option>
+                </field>
+                <field
+                        name="logout"
+                        type="menuitem"
+                        default=""
+                        disable="separator"
+                        label="MOD_LOGINZA_LOGOUT_REDIR"
+                        description="MOD_LOGINZA_LOGOUT_REDIR_DESC"
+                        state="1"
+                        >
+                    <option value="">Текущая страница</option>
+                </field>
+
+                <field
+                        name="cache"
+                        type="radio"
+                        default="0"
+                        label="MOD_LOGINZA_CACHE"
+                        description="MOD_LOGINZA_CACHE_DESC"
+                        >
+                    <option value="0">JYES</option>
+                    <option value="1">JNO</option>
+                </field>
+
+                <field
+                        name="moduleclass_sfx"
+                        type="text"
+                        default=""
+                        label="MOD_LOGINZA_SUFFIX"
+                        description="MOD_LOGINZA_SUFFIX_DESC"
+                        />
+            </fieldset>
+        </fields>
+    </config>
+    <params>
+                        <param
+                        name="mode"
+                        type="list"
+                        default="icons"
+                        label="MOD_LOGINZA_REGIM"
+                        description="MOD_LOGINZA_REGIM_DESC">
+                    <option value="html">MOD_LOGINZA_TEXT</option>
+                    <option value="icons">MOD_LOGINZA_ICONS</option>
+                    <option value="iconssmall">MOD_LOGINZA_ICONS_SMALL</option>
+                    <option value="iconstable">MOD_LOGINZA_ICONS_TABLE</option>
+                </param>
+                <param
+                        name="providers"
+                        type="list"
+                        default="all"
+                        label="MOD_LOGINZA_PROV"
+                        description="MOD_LOGINZA_PROV_DESC"
+                        >
+                    <option value="all">MOD_LOGINZA_USER_CHOICE</option>
+                    <option value="google">Google</option>
+                    <option value="yandex">Yandex</option>
+                    <option value="mailruapi">Mail.ru API</option>
+                    <option value="mailru">Mail.ru</option>
+                    <option value="vkontakte">VKontakte</option>
+                    <option value="facebook">Facebook</option>
+                    <option value="twitter">Twitter</option>
+                    <option value="loginza">Lоginza</option>
+                    <option value="myopenid">MyOpenId</option>
+                    <option value="webmoney">Webmoney</option>
+                    <option value="rambler">Rambler</option>
+                    <option value="flickr">Flickr</option>
+                    <option value="lastfm">Lastfm</option>
+                    <option value="aol">AOL</option>
+                    <option value="odnoklassniki">Odnoklassniki</option>
+                    <option value="linkedin">LinkedIn</option>
+                    <option value="livejournal">LiveJournal</option>
+                    <option value="steam">Steam</option>
+                    <!--<option value="openid">OpenId</option>-->
+                    <!--<option value="verisign">Verisign</option>-->
+                </param>
+
+                <param
+                        name="invite"
+                        type="radio"
+                        default="1"
+                        label="MOD_LOGINZA_INVITE"
+                        description="MOD_LOGINZA_INVITE_DESC"
+                        >
+                    <option value="0">NO</option>
+                    <option value="1">YES</option>
+                </param>
+                <param
+                        name="login_form"
+                        type="radio"
+                        default="1"
+                        label="MOD_LOGINZA_LOGIN_FORM"
+                        description="MOD_LOGINZA_LOGIN_FORM_DESC"
+                        >
+                    <option value="0">NO</option>
+                    <option value="1">YES</option>
+                </param>
+                <param
+                        name="greeting"
+                        type="radio"
+                        default="1"
+                        label="MOD_LOGINZA_GREETING"
+                        description="MOD_LOGINZA_GREETING_DESC"
+                        >
+                    <option value="0">NO</option>
+                    <option value="1">YES</option>
+                </param>
+                <param
+                        name="greeting_template"
+                        type="text"
+                        default="Hi, %s!"
+                        label="MOD_LOGINZA_GREETING_TPL"
+                        description="MOD_LOGINZA_GREETING_TPL_DESC"
+                        />
+                <param
+                        name="name"
+                        type="list"
+                        default="0"
+                        label="MOD_LOGINZA_NAME"
+                        description="MOD_LOGINZA_NAME_DESC"
+                        >
+                    <option value="0">Username</option>
+                    <option value="1">Name</option>
+                </param>
+                <param
+                        name="login"
+                        type="menuitem"
+                        default=""
+                        disable="separator"
+                        label="MOD_LOGINZA_LOGIN_REDIR"
+                        description="MOD_LOGINZA_LOGIN_REDIR_DESC"
+                        state="1"
+                        >
+                    <option value="">Текущая страница</option>
+                </param>
+                <param
+                        name="logout"
+                        type="menuitem"
+                        default=""
+                        disable="separator"
+                        label="MOD_LOGINZA_LOGOUT_REDIR"
+                        description="MOD_LOGINZA_LOGOUT_REDIR_DESC"
+                        state="1"
+                        >
+                    <option value="">Текущая страница</option>
+                </param>
+
+                <param
+                        name="cache"
+                        type="radio"
+                        default="0"
+                        label="MOD_LOGINZA_CACHE"
+                        description="MOD_LOGINZA_CACHE_DESC"
+                        >
+                    <option value="0">YES</option>
+                    <option value="1">NO</option>
+                </param>
+
+                <param
+                        name="moduleclass_sfx"
+                        type="text"
+                        default=""
+                        label="MOD_LOGINZA_SUFFIX"
+                        description="MOD_LOGINZA_SUFFIX_DESC"
+                        />
+
+    </params>
+</install>
