@@ -2,12 +2,12 @@
 <install type="module" version="1.5" method="upgrade">
     <name>Loginza</name>
     <author>Аркадий Седельников</author>
-    <creationDate>07.10.2011</creationDate>
+    <creationDate>26.11.2011</creationDate>
     <copyright>Copyright Arkadiy Sedelnikov (c) 2011</copyright>
     <license>GPL 3.0</license>
     <authorEmail>a.sedelnikov@gmail.com</authorEmail>
     <authorUrl>argens.ru</authorUrl>
-    <version>1.0.6</version>
+    <version>1.0.7</version>
     <description>
         Based on the module Loginza from Anton Piskunov. Display a login form in Loginza and more than 20 providers of OpenID, such as AOL, Google, MyOpenId and others.
     </description>
@@ -164,7 +164,7 @@
             </fieldset>
         </fields>
     </config>
-    <params>
+    <params addpath="/modules/mod_loginza/elements">
                         <param
                         name="mode"
                         type="list"
@@ -179,6 +179,8 @@
                 <param
                         name="providers"
                         type="list"
+                        size="15"
+                        multiple="true"
                         default="all"
                         label="MOD_LOGINZA_PROV"
                         description="MOD_LOGINZA_PROV_DESC"

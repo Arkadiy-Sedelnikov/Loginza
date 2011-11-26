@@ -64,27 +64,19 @@ $img_url = JURI::base().'modules/mod_loginza/tmpl/img/';
 //       'verisign'
     );
 
+$providers =     $params->get("providers", array('all'));
+if($providers[0] == 'all'){
+    $providers = $providersArray;
+}
+
 $version = new JVersion();
 if ($version->RELEASE != '1.5') { //для 1.6 и 1.7
-    $providers =     $params->get("providers", array('all'));
-    if($providers[0] == 'all'){
-        $providers = $providersArray;
-    }
-
     $formTask = 'user.'.$type;
     $formOpt = 'com_users';
     $formViewReg = 'registration';
     $formPassWord = 'password';
 }
 else { //для 1.5
-    $providers =     $params->get("providers", 'all');
-    if($providers == 'all'){
-        $providers = $providersArray;
-    }
-    else{
-        $providers = array($providers);
-    }
-
     $formTask = $type;
     $formOpt = 'com_user';
     $formViewReg = 'register';
