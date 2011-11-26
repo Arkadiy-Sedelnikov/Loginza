@@ -116,12 +116,15 @@ class LoginzaController extends JController
     {
         $json = $this->json;
         $usersParams = JComponentHelper::getParams('com_users');
+        $params = JComponentHelper::getParams('com_loginza');
         $user = JFactory::getUser(0);
         $data = array();
         $db = JFactory::getDBO();
 
         $groupId = $usersParams->get('new_usertype', 2);
         $useractivation = $usersParams->get('useractivation');
+
+        $comBuilder = $params->get('com_builder', 0);
 
         //e-mail
         if (empty($json['email'])) {
@@ -226,6 +229,23 @@ class LoginzaController extends JController
         if (!$user->save()) {
             JError::raiseWarning('', JText::_($user->getError()));
             return false;
+        }
+        //заплатка для ком билдера
+        if($comBuilder){
+            $query = 'SELECT `id` FROM `#__users`';
+            if($this->pluginEnable){
+                $query .= ' WHERE `loginza_id` = \'' . $this->id . ':' . $this->nameProvider . '\' LIMIT 1';
+            }
+            else {
+                $query .= ' WHERE `username`   = \'' . $this->id . ':' . $this->nameProvider . '\' LIMIT 1';
+            }
+            $db->setQuery($query);
+            $id = $db->LoadResult();
+            if((int)$id > 0){
+                $query = "INSERT INTO `#__comprofiler` (`id`, `user_id`) VALUES ('$id', '$id')";
+                $db->setQuery($query);
+                $db->query();
+            }
         }
     }
     
