@@ -1,1 +1,1 @@
-ALTER TABLE  `jos_users` DROP  `loginza_id`
+ALTER TABLE  `#__users` DROP  `loginza_id`
