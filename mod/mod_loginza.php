@@ -65,18 +65,27 @@ $img_url = JURI::base().'modules/mod_loginza/tmpl/img/';
     );
 
 $providers =     $params->get("providers", array('all'));
-if($providers[0] == 'all'){
-    $providers = $providersArray;
-}
 
 $version = new JVersion();
 if ($version->RELEASE != '1.5') { //для 1.6 и 1.7
+    if($providers[0] == 'all'){
+        $providers = $providersArray;
+    }
     $formTask = 'user.'.$type;
     $formOpt = 'com_users';
     $formViewReg = 'registration';
     $formPassWord = 'password';
 }
 else { //для 1.5
+    if(!is_array($providers) && ($providers == 'all' || empty($providers))){
+        $providers = $providersArray;
+    }
+    elseif(!is_array($providers)){
+        $providers = array($providers);
+    }
+    elseif(is_array($providers) && $providers[0] == 'all'){
+        $providers = $providersArray;
+    }
     $formTask = $type;
     $formOpt = 'com_user';
     $formViewReg = 'register';
