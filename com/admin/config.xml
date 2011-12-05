@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="utf-8"?>
+<config>
+	<fieldset name="config"
+		label="LOGINZA_CONFIG"
+	>
+		<field
+                name="debug"
+                type="radio"
+                default="0"
+                label="LOGINZA_DEBUG"
+                description="LOGINZA_DEBUG_DESC"
+                >
+            <option value="1">JYES</option>
+			<option value="0">JNO</option>
+        </field>
+        <field
+                name="secretkey"
+                type="text"
+                default=""
+                label="LOGINZA_SECRET_KEY"
+                description="LOGINZA_SECRET_KEY_DESC"
+                />
+		<field
+                name="widgetid"
+                type="text"
+                default=""
+                label="LOGINZA_WIDGET_ID"
+                description="LOGINZA_WIDGET_ID_DESC"
+                />
+        <field
+                name="activation"
+                type="radio"
+                default="enable"
+                label="LOGINZA_ACTIVATION"
+                description="LOGINZA_ACTIVATION_DESC"
+                >
+            <option value="enable">LOGINZA_ACTIVATION_ENABLE</option>
+			<option value="joomla">LOGINZA_ACTIVATION_JOOMLA</option>
+        </field>
+        <field
+                name="com_builder"
+                type="radio"
+                default="0"
+                label="LOGINZA_COM_BUILDER"
+                description="LOGINZA_COM_BUILDER_DESC"
+                >
+            <option value="1">JYES</option>
+			<option value="0">JNO</option>
+        </field>
+	</fieldset>
+    
+    <params>
+        		<param
+                name="debug"
+                type="radio"
+                default="0"
+                label="LOGINZA_DEBUG"
+                description="LOGINZA_DEBUG_DESC"
+                >
+            <option value="1">YES</option>
+			<option value="0">NO</option>
+        </param>
+        <param
+                name="secretkey"
+                type="text"
+                default=""
+                label="LOGINZA_SECRET_KEY"
+                description="LOGINZA_SECRET_KEY_DESC"
+                />
+		<param
+                name="widgetid"
+                type="text"
+                default=""
+                label="LOGINZA_WIDGET_ID"
+                description="LOGINZA_WIDGET_ID_DESC"
+                />
+        <param
+                name="activation"
+                type="radio"
+                default="enable"
+                label="LOGINZA_ACTIVATION"
+                description="LOGINZA_ACTIVATION_DESC"
+                >
+            <option value="enable">LOGINZA_ACTIVATION_ENABLE</option>
+			<option value="joomla">LOGINZA_ACTIVATION_JOOMLA</option>
+        </param>
+        		<param
+                name="com_builder"
+                type="radio"
+                default="0"
+                label="LOGINZA_COM_BUILDER"
+                description="LOGINZA_COM_BUILDER_DESC"
+                >
+            <option value="1">YES</option>
+			<option value="0">NO</option>
+        </param>
+    </params>
+</config>
