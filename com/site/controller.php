@@ -21,6 +21,10 @@ class LoginzaController extends JController
     var $id             = null;
     var $pluginEnable   = null;
     var $providers      = null;
+    var $user_id        = null;
+    var $user_pass      = null;
+    var $confirm_email  = null;
+    var $email  = null;
 
     function __construct(&$db)
 	{
@@ -40,7 +44,6 @@ class LoginzaController extends JController
     private function request()
     {
         $json = array();
-        $app = JFactory::getApplication();
         $token = $_POST['token'];
         $sieg = md5($token . $this->conf->secretkey);
         $file = "http://loginza.ru/api/authinfo?token=" . $token;
@@ -53,9 +56,6 @@ class LoginzaController extends JController
 
         if ($file){
             $json = json_decode($file[0], true);
-            if(isset($json['error_type']) && $json['error_type'] != null){
-                $app->redirect('/', $json['error_message'], 'error');
-            }
         }
         return $json;
     }
@@ -66,18 +66,19 @@ class LoginzaController extends JController
     public function auth()
     {
         $db = JFactory::getDBO();
+        $app = JFactory::getApplication();
 
-        $query = 'SELECT * FROM `#__users`';
-
-        if($this->pluginEnable){
-            $query .= ' WHERE `loginza_id` = \'' . $this->id . ':' . $this->nameProvider . '\' LIMIT 1';
-        }
-        else {
-            $query .= ' WHERE `username`   = \'' . $this->id . ':' . $this->nameProvider . '\' LIMIT 1';
-        }
+        $query = 'SELECT * FROM `#__loginza_users`';
+        $query .= ' WHERE `loginza_id` = \'' . $this->id . ':' . $this->nameProvider . '\' LIMIT 1';
         $db->setQuery($query);
-        $db->query();
-        if ($db->getNumRows()) {
+        $user = $db->loadObjectList();
+        if (count($user)) {
+            $this->user_id = $user[0]->user_id;
+            $juser = JUser::getInstance($this->user_id);
+            $this->email = $juser->email;
+            $this->confirm_email = $user[0]->confirmed;
+            $this->user_pass = $user[0]->loginza_pass;
+
             //Авторизуемся
             $this->login();
         } else {
@@ -93,19 +94,28 @@ class LoginzaController extends JController
      */
     private function login()
     {
+        $app = JFactory::getApplication();
+
         $return = JRequest::getVar('return', '');
         $return = (!empty($return)) ? base64_decode(JRequest::getVar('return', '')) : JURI::base();
 
-        $options = array();
-        $options['remember'] = JRequest::getBool('remember', false);
-        $options['return'] = $return;
+        if($this->user_pass != $this->passwd){
+            $app->redirect($return, JText::_('COM_LOGINZA_PASS_ERR'));
+        }
 
-        $credentials = array();
-        $credentials['username'] = $this->id . ':' . $this->nameProvider;
-        $credentials['password'] = $this->passwd;
+        if(!$this->confirm_email && $this->conf->confirm_email){
+            $app->redirect(JRoute::_('index.php?option=com_loginza&view=comparison_user&email='.$this->email.'&id='.$this->user_id,false));
+        }
 
-        $app = JFactory::getApplication();
-        $app->login($credentials, $options);
+        $user_id = $this->user_id;
+        if ($user_id>0) {
+            $instance = JUser::getInstance($user_id);
+            $session = &JFactory::getSession();
+            $instance->guest = 0;
+            $instance->aid = 1;
+            $session->set('user', $instance);
+            $instance->setLastVisit();
+        }
         $app->redirect($return);
     }
 
@@ -114,17 +124,22 @@ class LoginzaController extends JController
      */
     private function register()
     {
+        jimport('joomla.mail.helper');
         $json = $this->json;
+        $app = JFactory::getApplication();
+        $db = JFactory::getDBO();
+        $user = JFactory::getUser(0);
         $usersParams = JComponentHelper::getParams('com_users');
         $params = JComponentHelper::getParams('com_loginza');
-        $user = JFactory::getUser(0);
         $data = array();
-        $db = JFactory::getDBO();
 
         $groupId = $usersParams->get('new_usertype', 2);
         $useractivation = $usersParams->get('useractivation');
-
         $comBuilder = $params->get('com_builder', 0);
+
+        if(isset($json['error_type']) && $json['error_type'] != null){
+            $app->redirect('/', $json['error_message'], 'error');
+        }
 
         //e-mail
         if (empty($json['email'])) {
@@ -134,16 +149,18 @@ class LoginzaController extends JController
             $email = $json['email'];
         }
 
-        jimport('joomla.mail.helper');
+        $this->email = $email;
+        $isOldUser = 0;
+        $user_from_mail = null;
 
         if (JMailHelper::isEmailAddress($email)) {
             $query = 'SELECT * FROM `#__users`';
             $query .= ' WHERE `email` = ' . $db->Quote($email) . ' LIMIT 1';
             $db->setQuery($query);
-            $db->query();
-            if ($db->getNumRows()) {
-                //Replace email with a fake name to avoid joomla user conflict
-                $email = uniqid() . '_.' . $email;
+            $user_from_mail = $db->loadObjectList();
+
+            if (count($user_from_mail)>0) {
+                $isOldUser = 1;
             }
         }
         //name
@@ -159,42 +176,34 @@ class LoginzaController extends JController
 
         $data['groups'] = array($groupId);
         $data['name'] = $name;
-        $version = new JVersion();
-        if ($version->RELEASE != '1.5') { //для 1.6 и 1.7
-            if($this->pluginEnable){
-                if(!empty($json['nickname'])){
-                    $nickname = $json['nickname'];
-                }
-                elseif(!empty($json['name']['first_name'])){
-                    $nickname = $json['name']['first_name'];
-                }
-                elseif(!empty($json['name']['full_name'])){
-                    $nickname = $json['name']['full_name'];
-                }
-                else{
-                    $nickname = $this->id . ':' . $this->nameProvider;
-                }
 
-		        $query = 'SELECT * FROM `#__users`';
-                $query .= ' WHERE `username` = ' . $db->Quote($nickname) . ' LIMIT 1';
-                $db->setQuery((string) $query);
-                $db->query();
-                if ($db->getNumRows()) {
-                    //Replace email with a fake name to avoid joomla user conflict
-                    $nickname = $nickname.uniqid();
-                }
-
-                $data['username'] = $nickname;
-            }
-            else{
-                $data['username'] = $this->id . ':' . $this->nameProvider;
-            }
+        if(!empty($json['nickname'])){
+            $nickname = $json['nickname'];
         }
-        else { //для 1.5
-            $data['username'] = $this->id . ':' . $this->nameProvider;
+        elseif(!empty($json['name']['first_name'])){
+            $nickname = $json['name']['first_name'];
+        }
+        elseif(!empty($json['name']['full_name'])){
+            $nickname = $json['name']['full_name'];
+        }
+        else{
+            $nickname = $this->id . ':' . $this->nameProvider;
+        }
 
+        $query = 'SELECT * FROM `#__users`';
+        $query .= ' WHERE `username` = ' . $db->Quote($nickname) . ' LIMIT 1';
+        $db->setQuery((string) $query);
+        $db->query();
+        if ($db->getNumRows()) {
+            //Replace email with a fake name to avoid joomla user conflict
+            $nickname = $nickname.uniqid();
+        }
+
+        $data['username'] = $nickname;
+
+        $version = new JVersion();
+        if ($version->RELEASE == '1.5') { //для 1.5
             $acl =& JFactory::getACL();
-
             $usertype = $usersParams->get( 'new_usertype' );
 			if(!$usertype){
 				$usertype = 'Registered';
@@ -204,7 +213,6 @@ class LoginzaController extends JController
         }
 
 
-        $data['loginza_id'] = $this->id . ':' . $this->nameProvider;
         $data['email'] = $data['email1'] = $data['email2'] = $email;
         $data['password'] = $this->passwd;
         $data['password2'] = $this->passwd;
@@ -220,33 +228,96 @@ class LoginzaController extends JController
             $data['block'] = 0;
         }
 
-//var_dump($json); var_dump($data); die;
-        if (!$user->bind($data)) {
-            JError::raiseWarning('', JText::_($user->getError()));
+        if(!$isOldUser){
+            if (!$user->bind($data)) {
+                JError::raiseWarning('', JText::_($user->getError()));
+                return false;
+            }
+
+            if (!$user->save()) {
+                JError::raiseWarning('', JText::_($user->getError()));
+                return false;
+            }
+        }
+
+        $user_id = $this->user_id = (!$isOldUser) ? $user->id : $user_from_mail[0]->id;
+        $this->confirm_email = ($isOldUser && $this->conf->confirm_email) ? 0 : 1;
+        $this->user_pass = $this->passwd;
+
+        $loginzaData = array();
+        $loginzaData['id'] = null;
+        $loginzaData['user_id'] = $user_id;
+        $loginzaData['loginza_id'] = $this->id . ':' . $this->nameProvider;
+        $loginzaData['loginza_pass'] = $this->passwd;
+        $loginzaData['confirmed'] = $this->confirm_email;
+
+        JTable::addIncludePath(JPATH_COMPONENT . '/tables');
+        $loginzaUser = &JTable::getInstance('loginza_users', 'loginzaTable');
+
+        if (!$loginzaUser->bind($loginzaData)) {
+            JError::raiseWarning('', JText::_($loginzaUser->getError()));
+            return false;
+        }
+         if (!$loginzaUser->store()) {
+            JError::raiseWarning('', JText::_($loginzaUser->getError()));
             return false;
         }
 
-        if (!$user->save()) {
-            JError::raiseWarning('', JText::_($user->getError()));
-            return false;
-        }
         //заплатка для ком билдера
         if($comBuilder){
-            $query = 'SELECT `id` FROM `#__users`';
-            if($this->pluginEnable){
-                $query .= ' WHERE `loginza_id` = \'' . $this->id . ':' . $this->nameProvider . '\' LIMIT 1';
-            }
-            else {
-                $query .= ' WHERE `username`   = \'' . $this->id . ':' . $this->nameProvider . '\' LIMIT 1';
-            }
-            $db->setQuery($query);
-            $id = $db->LoadResult();
-            if((int)$id > 0){
-                $query = "INSERT INTO `#__comprofiler` (`id`, `user_id`) VALUES ('$id', '$id')";
+            if((int)$this->user_id > 0){
+                $query = "INSERT INTO `#__comprofiler` (`id`, `user_id`) VALUES ('$user_id', '$user_id')";
                 $db->setQuery($query);
                 $db->query();
             }
         }
+        return true;
+    }
+
+    public function comp_email(){
+        JRequest::checkToken('post') or jexit(JText::_('JInvalid_Token'));
+
+        		$app = JFactory::getApplication();
+
+        		// Populate the data array:
+        		$data = array();
+                $user_id = JRequest::getInt('user_id', 0);
+        		$data['return'] = base64_decode(JRequest::getVar('return', '', 'POST', 'BASE64'));
+        		$data['username'] = JRequest::getVar('username', '', 'method', 'username');
+        		$data['password'] = JRequest::getString('password', '', 'post', JREQUEST_ALLOWRAW);
+
+        		// Set the return URL if empty.
+        		if (empty($data['return'])) {
+        			$data['return'] = 'index.php?option=com_users&view=profile';
+        		}
+
+        		// Get the log in options.
+        		$options = array();
+        		$options['remember'] = JRequest::getBool('remember', false);
+        		$options['return'] = $data['return'];
+
+        		// Get the log in credentials.
+        		$credentials = array();
+        		$credentials['username'] = $data['username'];
+        		$credentials['password'] = $data['password'];
+
+        		// Perform the log in.
+        		$error = $app->login($credentials, $options);
+
+        		// Check if the log in succeeded.
+        		if (!JError::isError($error)) {
+        			$app->setUserState('users.login.form.data', array());
+
+                    JTable::addIncludePath(JPATH_COMPONENT . '/tables');
+                    $loginzaUser = &JTable::getInstance('loginza_users', 'loginzaTable');
+                    $loginzaUser->confirm_email($user_id); die;
+
+        			$app->redirect(JRoute::_($data['return'], false));
+        		} else {
+        			$data['remember'] = (int)$options['remember'];
+        			$app->setUserState('users.login.form.data', $data);
+        			$app->redirect(JRoute::_('index.php?option=com_users&view=login', false));
+        		}
     }
     
     /*
@@ -254,7 +325,7 @@ class LoginzaController extends JController
      */
     private function generatePasswd()
     {
-        return $this->json['identity'] . $this->conf->secretkey;
+        return md5($this->json['identity'] . $this->conf->secretkey);
     }
 
     /*
@@ -278,6 +349,9 @@ class LoginzaController extends JController
     {
         $nameProvider = $this->nameProvider;
         $json = $this->json;
+        if(empty($json['identity'])){
+            return false;
+        }
         preg_match($this->providers[$nameProvider]['string'], $json['identity'], $matches);
         $id = JString::strtolower($matches[2]);
 
@@ -291,7 +365,8 @@ class LoginzaController extends JController
      * регулярное выражение для вычисления ида пользователя,
      * email для подстановки в случае его отсутствия в ответе.
      */
-    public function getProviders(){
+    public function getProviders()
+    {
         $providers = array(
             'google'        => array(
                                     'provider' => 'www.google.com',
@@ -400,22 +475,23 @@ class LoginzaController extends JController
     /*
      * Конфигурация компонента
      */
-    private function conf(){
+    private function conf()
+    {
         $conf = null;
         $params = &JComponentHelper::getParams('com_loginza');
         $conf->secretkey = $params->get("secretkey", '');
         $conf->widgetid = $params->get("widgetid", '');
         $conf->debug = $params->get("debug", 0);
         $conf->activation = $params->get("activation", 'enable');
+        $conf->confirm_email = $params->get("confirm_email", 0);
         return $conf;
     }
 
     /*
      * Проверяет установлен и опубликован плагин логинзы
      */
-    private function pluginEnable(){
+    private function pluginEnable()
+    {
         return JPluginHelper::isEnabled('authentication', 'loginza');
     }
 }
-
-?>

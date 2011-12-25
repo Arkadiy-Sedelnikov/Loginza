@@ -38,6 +38,16 @@
 			<option value="joomla">LOGINZA_ACTIVATION_JOOMLA</option>
         </field>
         <field
+                name="confirm_email"
+                type="radio"
+                default="0"
+                label="LOGINZA_CONFIRM_EMAIL"
+                description="LOGINZA_CONFIRM_EMAIL_DESC"
+                >
+            <option value="1">JYES</option>
+			<option value="0">JNO</option>
+        </field>
+        <field
                 name="com_builder"
                 type="radio"
                 default="0"
@@ -83,6 +93,16 @@
                 >
             <option value="enable">LOGINZA_ACTIVATION_ENABLE</option>
 			<option value="joomla">LOGINZA_ACTIVATION_JOOMLA</option>
+        </param>
+        <param
+                name="confirm_email"
+                type="radio"
+                default="0"
+                label="LOGINZA_CONFIRM_EMAIL"
+                description="LOGINZA_CONFIRM_EMAIL_DESC"
+                >
+            <option value="1">YES</option>
+			<option value="0">NO</option>
         </param>
         		<param
                 name="com_builder"

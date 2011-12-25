@@ -37,7 +37,7 @@ if($type == 'login'){
 
 $document->addStyleSheet(JURI::root() . "/modules/mod_loginza/tmpl/css/style.css");
 
-$loginza_url = 'https://loginza.ru/api/widget?token_url='.urlencode(JRoute::_( JURI::base().'index.php?option=com_loginza&return='.$return, true, $params->get('usesecure')));
+$loginza_url = 'https://loginza.ru/api/widget?token_url='.urlencode(JRoute::_( JURI::base().'index.php?option=com_loginza&task=auth&return='.$return, true, $params->get('usesecure')));
 
 $img_url = JURI::base().'modules/mod_loginza/tmpl/img/';
 
