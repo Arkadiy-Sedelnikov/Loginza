@@ -2,12 +2,20 @@
 <install type="component" version="1.5.0" method="upgrade">
     <name>Loginza</name>
     <author>Аркадий Седельников</author>
+<<<<<<< HEAD
     <creationDate>25.12.2011</creationDate>
+=======
+    <creationDate>05.12.2011</creationDate>
+>>>>>>> abb3e6bc69f546afdfe8705196df6f141fea5cf7
     <copyright>Copyright Arkadiy Sedelnikov (c) 2011</copyright>
     <license>GPL 3.0</license>
     <authorEmail>a.sedelnikov@gmail.com</authorEmail>
     <authorUrl>argens.ru</authorUrl>
+<<<<<<< HEAD
     <version>1.1</version>
+=======
+    <version>1.0.8</version>
+>>>>>>> abb3e6bc69f546afdfe8705196df6f141fea5cf7
     <description>Компонент для авторизации пользователей на сайте при помощи API Loginza.ru. Основан на модуле Логинзы Антона Пискунова.</description>
 
 	<install> <!-- Runs on install -->
@@ -23,6 +31,7 @@
 	</uninstall>
     
     <files folder="site">
+<<<<<<< HEAD
         <folder>models</folder>
         <folder>tables</folder>
         <folder>views</folder>
@@ -34,10 +43,18 @@
         <language tag="en-GB">en-GB.com_loginza.ini</language>
         <language tag="ru-RU">ru-RU.com_loginza.ini</language>
     </languages>
+=======
+        <filename>loginza.php</filename>
+        <filename>controller.php</filename>
+        <filename>index.html</filename>
+        <filename>license.txt</filename>
+    </files>
+>>>>>>> abb3e6bc69f546afdfe8705196df6f141fea5cf7
 
     <administration>
         <menu img="components/com_loginza/img/loginza_ico.gif" link="option=com_loginza">Loginza</menu>
         <files folder="admin">
+<<<<<<< HEAD
             <folder>assets</folder>
             <folder>img</folder>
             <folder>sql</folder>
@@ -46,6 +63,16 @@
             <filename>controller.php</filename>
             <filename>index.html</filename>
             <filename>loginza.php</filename>
+=======
+            <filename>index.html</filename>
+            <filename>config.xml</filename>
+            <filename>loginza.php</filename>
+            <filename>controller.php</filename>
+            <folder>views</folder>
+            <folder>assets</folder>
+            <folder>img</folder>
+            <folder>sql</folder>
+>>>>>>> abb3e6bc69f546afdfe8705196df6f141fea5cf7
         </files>
 
         <languages folder="languages/admin">

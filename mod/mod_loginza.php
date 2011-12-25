@@ -37,7 +37,11 @@ if($type == 'login'){
 
 $document->addStyleSheet(JURI::root() . "/modules/mod_loginza/tmpl/css/style.css");
 
+<<<<<<< HEAD
 $loginza_url = 'https://loginza.ru/api/widget?token_url='.urlencode(JRoute::_( JURI::base().'index.php?option=com_loginza&task=auth&return='.$return, true, $params->get('usesecure')));
+=======
+$loginza_url = 'https://loginza.ru/api/widget?token_url='.urlencode(JRoute::_( JURI::base().'index.php?option=com_loginza&return='.$return, true, $params->get('usesecure')));
+>>>>>>> abb3e6bc69f546afdfe8705196df6f141fea5cf7
 
 $img_url = JURI::base().'modules/mod_loginza/tmpl/img/';
 
@@ -65,18 +69,39 @@ $img_url = JURI::base().'modules/mod_loginza/tmpl/img/';
     );
 
 $providers =     $params->get("providers", array('all'));
+<<<<<<< HEAD
 if($providers[0] == 'all'){
     $providers = $providersArray;
 }
 
 $version = new JVersion();
 if ($version->RELEASE != '1.5') { //для 1.6 и 1.7
+=======
+
+$version = new JVersion();
+if ($version->RELEASE != '1.5') { //для 1.6 и 1.7
+    if($providers[0] == 'all'){
+        $providers = $providersArray;
+    }
+>>>>>>> abb3e6bc69f546afdfe8705196df6f141fea5cf7
     $formTask = 'user.'.$type;
     $formOpt = 'com_users';
     $formViewReg = 'registration';
     $formPassWord = 'password';
 }
 else { //для 1.5
+<<<<<<< HEAD
+=======
+    if(!is_array($providers) && ($providers == 'all' || empty($providers))){
+        $providers = $providersArray;
+    }
+    elseif(!is_array($providers)){
+        $providers = array($providers);
+    }
+    elseif(is_array($providers) && $providers[0] == 'all'){
+        $providers = $providersArray;
+    }
+>>>>>>> abb3e6bc69f546afdfe8705196df6f141fea5cf7
     $formTask = $type;
     $formOpt = 'com_user';
     $formViewReg = 'register';

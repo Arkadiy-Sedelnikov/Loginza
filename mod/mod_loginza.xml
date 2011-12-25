@@ -2,12 +2,20 @@
 <install type="module" version="1.5" method="upgrade">
     <name>Loginza</name>
     <author>Аркадий Седельников</author>
+<<<<<<< HEAD
     <creationDate>25.12.2011</creationDate>
+=======
+    <creationDate>05.12.2011</creationDate>
+>>>>>>> abb3e6bc69f546afdfe8705196df6f141fea5cf7
     <copyright>Copyright Arkadiy Sedelnikov (c) 2011</copyright>
     <license>GPL 3.0</license>
     <authorEmail>a.sedelnikov@gmail.com</authorEmail>
     <authorUrl>argens.ru</authorUrl>
+<<<<<<< HEAD
     <version>1.1</version>
+=======
+    <version>1.0.8</version>
+>>>>>>> abb3e6bc69f546afdfe8705196df6f141fea5cf7
     <description>
         Based on the module Loginza from Anton Piskunov. Display a login form in Loginza and more than 20 providers of OpenID, such as AOL, Google, MyOpenId and others.
     </description>
@@ -15,8 +23,15 @@
     <files>
         <filename module="mod_loginza">mod_loginza.php</filename>
         <filename>index.html</filename>
+<<<<<<< HEAD
         <filename>helper.php</filename>
         <folder>tmpl</folder>
+=======
+        <filename>license.txt</filename>
+        <filename>helper.php</filename>
+        <folder>tmpl</folder>
+        <folder>elements</folder>
+>>>>>>> abb3e6bc69f546afdfe8705196df6f141fea5cf7
     </files>
 
     <languages folder="languages">
