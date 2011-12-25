@@ -23,11 +23,6 @@ else { //для 1.5
     $controller = new LoginzaController($database);
 }
 
-<<<<<<< HEAD
 $controller->execute(JRequest::getCmd('task'));
 $controller->redirect();
-=======
-//Входим!
-$controller->auth();
->>>>>>> abb3e6bc69f546afdfe8705196df6f141fea5cf7
 ?>

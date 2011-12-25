@@ -7,11 +7,7 @@
 
 defined('_JEXEC') or die('Restricted access'); // no direct access
 ?>
-<<<<<<< HEAD
 <a class="loginza" href="<?php echo $loginza_url . $providersSet;?>&amp;task=auth">
-=======
-<a class="loginza" href="<?php echo $loginza_url . $providersSet;?>">
->>>>>>> abb3e6bc69f546afdfe8705196df6f141fea5cf7
     <?php echo JText::_( 'LOGINZA_LOGENTER_SERV' ); ?>
 </a>
 

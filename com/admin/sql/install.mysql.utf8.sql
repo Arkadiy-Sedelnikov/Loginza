@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 CREATE TABLE IF NOT EXISTS `#__loginza_users` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `user_id` int(11) NOT NULL,
@@ -8,6 +7,3 @@ CREATE TABLE IF NOT EXISTS `#__loginza_users` (
   PRIMARY KEY (`id`),
   KEY `user_id` (`user_id`,`loginza_id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 AUTO_INCREMENT=1
-=======
-ALTER TABLE `#__users` ADD `loginza_id` varchar(255) NOT NULL
->>>>>>> abb3e6bc69f546afdfe8705196df6f141fea5cf7
