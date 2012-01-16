@@ -1,1 +1,1 @@
-ALTER TABLE  `#__users` DROP  `loginza_id`
+DROP TABLE IF EXISTS `#__loginza_users`

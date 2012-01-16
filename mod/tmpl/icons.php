@@ -9,7 +9,7 @@ defined('_JEXEC') or die('Restricted access'); // no direct access
 
 <div>
 	<p><?php echo JText::_( 'LOGENTERUSESERVICE' ); ?></p>
-	<a class="loginza" href="<?php echo $loginza_url . $providersSet; ?>">
+	<a class="loginza" href="<?php echo $loginza_url . $providersSet; ?>&amp;task=auth">
         <img src="<?php echo $img_url?>icons.png" alt="<?php echo JText::_( 'LOGENTER' ); ?>"/>
     </a>
 </div>

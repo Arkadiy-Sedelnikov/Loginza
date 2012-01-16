@@ -15,7 +15,7 @@ defined('_JEXEC') or die('Restricted access'); // no direct access
 <div class="loginza_providers">
     <?php foreach ($providers as $provider) : ?>
         <div class="loginza_provider">
-        	<a class="loginza" href="<?php echo $loginza_url ?>&amp;provider=<?php echo $provider; ?>">
+        	<a class="loginza" href="<?php echo $loginza_url ?>&amp;provider=<?php echo $provider; ?>&amp;task=auth">
                 <div class="loginza_provider_img loginza_prov_<?php echo $provider;?>" title="<?php echo $provider; ?>"></div>
             </a>
         </div>

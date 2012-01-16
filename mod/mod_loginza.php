@@ -37,7 +37,7 @@ if($type == 'login'){
 
 $document->addStyleSheet(JURI::root() . "/modules/mod_loginza/tmpl/css/style.css");
 
-$loginza_url = 'https://loginza.ru/api/widget?token_url='.urlencode(JRoute::_( JURI::base().'index.php?option=com_loginza&return='.$return, true, $params->get('usesecure')));
+$loginza_url = 'https://loginza.ru/api/widget?token_url='.urlencode(JRoute::_( JURI::base().'index.php?option=com_loginza&task=auth&return='.$return, true, $params->get('usesecure')));
 
 $img_url = JURI::base().'modules/mod_loginza/tmpl/img/';
 
@@ -66,17 +66,19 @@ $img_url = JURI::base().'modules/mod_loginza/tmpl/img/';
 
 $providers =     $params->get("providers", array('all'));
 
+
 $version = new JVersion();
 if ($version->RELEASE != '1.5') { //для 1.6 и 1.7
-    if($providers[0] == 'all'){
-        $providers = $providersArray;
-    }
+	if($providers[0] == 'all'){
+		$providers = $providersArray;
+	}
     $formTask = 'user.'.$type;
     $formOpt = 'com_users';
     $formViewReg = 'registration';
     $formPassWord = 'password';
 }
 else { //для 1.5
+
     if(!is_array($providers) && ($providers == 'all' || empty($providers))){
         $providers = $providersArray;
     }
