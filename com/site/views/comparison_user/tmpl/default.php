@@ -9,7 +9,7 @@
 defined('_JEXEC') or die;
 JHtml::_('behavior.keepalive');
 ?>
-<div class="login<?php echo $this->pageclass_sfx?>">
+<div class="login">
 
     <h1>
         <?php echo JText::_('COM_LOGINZA_COMPARISON'); ?>
