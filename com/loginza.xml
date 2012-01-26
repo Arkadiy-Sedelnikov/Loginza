@@ -2,12 +2,12 @@
 <install type="component" version="1.5.0" method="upgrade">
     <name>Loginza</name>
     <author>Аркадий Седельников</author>
-    <creationDate>17.01.2012</creationDate>
+    <creationDate>27.01.2012</creationDate>
     <copyright>Copyright Arkadiy Sedelnikov (c) 2011</copyright>
     <license>GPL 3.0</license>
     <authorEmail>a.sedelnikov@gmail.com</authorEmail>
     <authorUrl>argens.ru</authorUrl>
-    <version>1.2</version>
+    <version>1.2.1</version>
     <description>Компонент для авторизации пользователей на сайте при помощи API Loginza.ru. Основан на модуле Логинзы Антона Пискунова.</description>
 
 	<install> <!-- Runs on install -->

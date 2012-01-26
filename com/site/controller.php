@@ -23,7 +23,8 @@ class LoginzaController extends JController
     var $user_id        = null;
     var $user_pass      = null;
     var $confirm_email  = null;
-    var $email  = null;
+    var $email          = null;
+    var $username       = null;
 
     function __construct(&$db)
 	{
@@ -73,7 +74,7 @@ class LoginzaController extends JController
         $db = JFactory::getDBO();
         $app = JFactory::getApplication();
 
-        $query  = 'SELECT `lu`.*, `u`.`id` AS uid ';
+        $query  = 'SELECT `lu`.*, `u`.`id` AS uid, `u`.`username` ';
         $query .= 'FROM `#__loginza_users` AS lu ';
         $query .= 'LEFT JOIN `#__users` AS u ON `u`.`id` = `lu`.`user_id` ';
         $query .= 'WHERE `lu`.`loginza_id` = ' . $db->quote($this->id . ':' . $this->nameProvider) . ' LIMIT 1';
@@ -86,6 +87,7 @@ class LoginzaController extends JController
             $this->email = $juser->email;
             $this->confirm_email = $user->confirmed;
             $this->user_pass = $user->loginza_pass;
+            $this->username = $user->username;
         }
         else if(is_object($user) && $user->user_id != $user->uid){
             //если удалили пользователя с идом догинзы из таблицы пользователей, то удаляем его строки из таблицы логинзы
@@ -110,6 +112,7 @@ class LoginzaController extends JController
     private function login()
     {
         $app = JFactory::getApplication();
+        $db = JFactory::getDBO();
 
         $return = JRequest::getVar('return', '');
         $return = (!empty($return)) ? base64_decode(JRequest::getVar('return', '')) : JURI::base();
@@ -124,12 +127,24 @@ class LoginzaController extends JController
 
         $user_id = $this->user_id;
         if ($user_id>0) {
-            $instance = JUser::getInstance($user_id);
+            $user = JUser::getInstance($user_id);
             $session = &JFactory::getSession();
-            $instance->guest = 0;
-            $instance->aid = 1;
-            $session->set('user', $instance);
-            $instance->setLastVisit();
+            $user->guest = 0;
+            $user->aid = 1;
+            $session->set('user', $user);
+            $app->checkSession();
+
+            // Update the user related fields for the Joomla sessions table.
+          	$db->setQuery(
+          		'UPDATE `#__session`' .
+          		' SET `guest` = '.$db->quote($user->guest).',' .
+          		'	`username` = '.$db->quote($this->username).',' .
+          		'	`userid` = '.(int) $user_id .
+          		' WHERE `session_id` = '.$db->quote($session->getId())
+          	);
+          	$db->query();
+
+            $user->setLastVisit();
         }
         $app->redirect($return);
     }
@@ -214,7 +229,7 @@ class LoginzaController extends JController
             $nickname = $nickname.uniqid();
         }
 
-        $data['username'] = $nickname;
+        $this->username = $data['username'] = $nickname;
 
         $version = new JVersion();
         if ($version->RELEASE == '1.5') { //для 1.5
