@@ -33,7 +33,7 @@ class LoginzaController extends JController
 
         $this->conf = $this->conf();
 
-        if($view != 'comparison_user' && $task != 'comp_email'){
+        if($view != 'comparison_user' && $task != 'join_email'){
             $this->json = $this->request();
         }
         
@@ -304,7 +304,7 @@ class LoginzaController extends JController
         return true;
     }
 
-    public function comp_email(){
+    public function join_email(){
         
         JRequest::checkToken('post') or jexit(JText::_('JInvalid_Token'));
 
@@ -415,9 +415,9 @@ class LoginzaController extends JController
                                     'email' => '@mail.ru'
                                 ),
             'vkontakte'     => array(
-                                    'provider' => 'http://vkontakte.ru/',
-                                    'string' => '/^(http:\/\/vkontakte.ru\/)?([^\/]+)/',
-                                    'email' => '@vkontakte.ru'
+                                    'provider' => 'http://vk.com/',
+                                    'string' => '/^(http:\/\/vk.com\/)?([^\/]+)/',
+                                    'email' => '@vk.com'
                                 ),
             'facebook'      => array(
                                     'provider' => 'http://www.facebook.com/',
